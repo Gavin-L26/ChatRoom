@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 
 import * as firebase from "firebase";
 
+import AppNavigator from './navigation/AppNavigator';
+
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyC6PmdF76X3Mbp21ol8pGEiZCO8A8W_sQQ",
@@ -18,11 +20,7 @@ if (!firebase.apps.length) {
 }
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+  return <AppNavigator/> ;
 }
 
 const styles = StyleSheet.create({
