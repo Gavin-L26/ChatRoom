@@ -6,39 +6,43 @@ import ChatScreen from '../screens/ChatScreen';
 import ShoppingListScreen from '../screens/ShoppingListScreen';
 import ThirdScreen from '../screens/ThirdScreen';
 import ForthScreen from '../screens/ForthScreen';
-
+import LoginScreen from '../screens/LoginScreen';
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 
-function TabNavigator() {
+function AppTabNavigator() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Chat" component={ChatScreen} />
-        <Tab.Screen name="List" component={ShoppingListScreen} />
-        <Tab.Screen name="Third" component={ThirdScreen} />
-        <Tab.Screen name="Settings" component={ForthScreen} />
-      </Tab.Navigator>    
-  </NavigationContainer>
+    <Tab.Navigator>
+      <Tab.Screen name="Chat" component={ChatScreen} />
+      <Tab.Screen name="List" component={ShoppingListScreen} />
+      <Tab.Screen name="Third" component={ThirdScreen} />
+      <Tab.Screen name="Settings" component={ForthScreen} />
+    </Tab.Navigator>    
   );
 }
 
-// const Stack = createStackNavigator();
 
-// function MyStack() {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator>
-//         <Stack.Screen name="Home" component={Home} />
-//         <Stack.Screen name="Notifications" component={Notifications} />
-//         <Stack.Screen name="Profile" component={Profile} />
-//         <Stack.Screen name="Settings" component={Settings} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
+function LoginStack() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="MainApp" component={AppTabNavigator} />
+      </Stack.Navigator>
+    </NavigationContainer>
 
-//   );
-// }
+  );
+}
 
-export default TabNavigator;
+// ================= under construction =================
+// function ChatStack() {}
+// function ListStack() {}
+// function ThirdStack() {}
+// function Forthtack() {}
+
+
+
+export default LoginStack;
