@@ -1,8 +1,13 @@
 # ChatRoom
 
-A react Native app that makes the life easier for those who live with their roommates.
+A React Native app that makes the life easier for those who live with their roommates.
 
-Features:
+# Tech Stack
+
+* React Native
+* Firebase
+
+# Features
 
 * Chat
 * Shared grocery list
