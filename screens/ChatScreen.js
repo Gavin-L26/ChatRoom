@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, FlatList} from 'react-native';
 
 
 const ChatScreen = props =>{
