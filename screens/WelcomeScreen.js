@@ -12,7 +12,7 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         {/* <Image source={require('../assets/flame.png')} style={styles.logo} /> */}
-        <Text style={styles.subtitle}>Expo Firebase Starter</Text>
+        <Text style={styles.subtitle}>Chat Room</Text>
       </View>
       <View style={styles.buttonContainer}>
         <AppButton title="Login" onPress={() => navigation.navigate("Login")} />
