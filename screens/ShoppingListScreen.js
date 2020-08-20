@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, Modal,FlatList, TouchableOpacity, TextInput} from 'react-native';
 
-
+import useStatusBar from "../hooks/useStatusBar";
 
 const ShoppingListScreen = props =>{
+  useStatusBar("dark-content");
+  
   const data = [  
     {
       id: 'G1',
@@ -59,7 +61,6 @@ const ShoppingListScreen = props =>{
     </View>)
 }
 
-
 const GroceryItem = props => {
   return (
     <TouchableOpacity onPress={props.onDelete }>
@@ -106,6 +107,11 @@ const NewItemModal = props => {
 const styles = StyleSheet.create({
 
   screen: {
+    flex: 1,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
     flex:1,
     backgroundColor:'#FFF0F5',
     justifyContent:"center",

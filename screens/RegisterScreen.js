@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import * as Yup from "yup";
 
 import Colors from "../utils/colors";
@@ -8,27 +8,35 @@ import Form from "../components/Forms/Form";
 import FormField from "../components/Forms/FormField";
 import FormButton from "../components/Forms/FormButton";
 import IconButton from "../components/IconButton";
-import { loginWithEmail } from "../components/Firebase/firebase";
 import FormErrorMessage from "../components/Forms/FormErrorMessage";
+import { registerWithEmail } from "../components/Firebase/firebase";
 import useStatusBar from "../hooks/useStatusBar";
 
 const validationSchema = Yup.object().shape({
+  name: Yup.string().required().label("Name"),
   email: Yup.string()
-    .required("Please enter a registered email")
+    .required("Please enter a valid email")
     .email()
     .label("Email"),
   password: Yup.string()
     .required()
     .min(6, "Password must have at least 6 characters")
     .label("Password"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Confirm Password must match Password")
+    .required("Confirm Password is required"),
 });
 
-export default function LoginScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
   useStatusBar("light-content");
 
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [rightIcon, setRightIcon] = useState("eye");
-  const [loginError, setLoginError] = useState("");
+  const [confirmPasswordIcon, setConfirmPasswordIcon] = useState("eye");
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(
+    true
+  );
+  const [registerError, setRegisterError] = useState("");
 
   function handlePasswordVisibility() {
     if (rightIcon === "eye") {
@@ -40,23 +48,43 @@ export default function LoginScreen({ navigation }) {
     }
   }
 
-  async function handleOnLogin(values) {
-    const { email, password } = values;
+  function handleConfirmPasswordVisibility() {
+    if (confirmPasswordIcon === "eye") {
+      setConfirmPasswordIcon("eye-off");
+      setConfirmPasswordVisibility(!confirmPasswordVisibility);
+    } else if (confirmPasswordIcon === "eye-off") {
+      setConfirmPasswordIcon("eye");
+      setConfirmPasswordVisibility(!confirmPasswordVisibility);
+    }
+  }
 
+  async function handleOnSignUp(values, actions) {
+    const { email, password } = values;
     try {
-      await loginWithEmail(email, password);
+      await registerWithEmail(email, password);
     } catch (error) {
-      setLoginError(error.message);
+      setRegisterError(error.message);
     }
   }
 
   return (
     <SafeView style={styles.container}>
       <Form
-        initialValues={{ email: "", password: "" }}
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
         validationSchema={validationSchema}
-        onSubmit={(values) => handleOnLogin(values)}
+        onSubmit={(values) => handleOnSignUp(values)}
       >
+        <FormField
+          name="name"
+          leftIcon="account"
+          placeholder="Enter name"
+          autoFocus={true}
+        />
         <FormField
           name="email"
           leftIcon="email"
@@ -64,7 +92,6 @@ export default function LoginScreen({ navigation }) {
           autoCapitalize="none"
           keyboardType="email-address"
           textContentType="emailAddress"
-          autoFocus={true}
         />
         <FormField
           name="password"
@@ -77,18 +104,24 @@ export default function LoginScreen({ navigation }) {
           rightIcon={rightIcon}
           handlePasswordVisibility={handlePasswordVisibility}
         />
-        <FormButton title={"Login"} />
-        {<FormErrorMessage error={loginError} visible={true} />}
+        <FormField
+          name="confirmPassword"
+          leftIcon="lock"
+          placeholder="Confirm password"
+          autoCapitalize="none"
+          autoCorrect={false}
+          secureTextEntry={confirmPasswordVisibility}
+          textContentType="password"
+          rightIcon={confirmPasswordIcon}
+          handlePasswordVisibility={handleConfirmPasswordVisibility}
+        />
+        <FormButton title={"Register"} />
+        {<FormErrorMessage error={registerError} visible={true} />}
       </Form>
-      <View style={styles.footerButtonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
-          <Text style={styles.forgotPasswordButtonText}>Forgot Password?</Text>
-        </TouchableOpacity>
-      </View>
       <IconButton
         style={styles.backButton}
         iconName="keyboard-backspace"
-        color="#fff"
+        color={Colors.white}
         size={30}
         onPress={() => navigation.goBack()}
       />
@@ -101,18 +134,9 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: Colors.stormCloud,
   },
-  footerButtonContainer: {
-    marginVertical: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  forgotPasswordButtonText: {
-    color: Colors.white,
-    fontSize: 18,
-    fontWeight: "600",
-  },
   backButton: {
     justifyContent: "center",
     alignItems: "center",
+    marginVertical: 10,
   },
 });
