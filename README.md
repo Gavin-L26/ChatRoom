@@ -4,7 +4,7 @@ A React Native app that makes the life easier for those who live with their room
 
 # Tech Stack
 
-* React Native
+* React Native with Expo
 * Firebase
 
 # Features
